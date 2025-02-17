@@ -1,63 +1,61 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import React from 'react';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import ProductCard from './components/ProductCard';
 
-const LandingPage = () => {
+export default function App() {
+  // Lijst met tweedehands producten
+  const products = [
+    {
+      id: 1,
+      image: 'https://placehold.co/150',
+      name: 'Vintage Spijkerjack',
+      description: 'Een retro spijkerjack uit de jaren 90, nog in topconditie!',
+      price: '€25,00',
+    },
+    {
+      id: 2,
+      image: 'https://placehold.co/150',
+      name: 'Leren Handtas',
+      description: 'Mooie vintage handtas van echt leer.',
+      price: '€40,00',
+    },
+    {
+      id: 3,
+      image: 'https://placehold.co/150',
+      name: 'Bohemian Armband',
+      description: 'Handgemaakte armband met natuurlijke stenen.',
+      price: '€10,00',
+    },
+  ];
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welkom!</Text>
-      <Text style={styles.description}>
-        Dit is de landingspagina van mijn applicatie!
-      </Text>
-      
-      <Image 
-        source={{ uri: "https://placehold.co/400" }}
-        style={styles.image}
-      />
-      
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Explore</Text>
-      </TouchableOpacity>
-    </View>
+    <ScrollView style={styles.container}>
+      <Text style={styles.header}>Thrift Shop 🛍️</Text>
+      {products.map((product) => (
+        <ProductCard
+          key={product.id}
+          image={product.image}
+          name={product.name}
+          description={product.description}
+          price={product.price}
+        />
+      ))}
+    </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     padding: 20,
-    backgroundColor: "#f4f4f4",
+    backgroundColor: '#f5f5dc', // Beige achtergrond voor vintage look
   },
-  title: {
+  header: {
     fontSize: 24,
-    fontWeight: "bold",
-    color: "#6200ea",
-    marginBottom: 10,
-  },
-  description: {
-    fontSize: 16,
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'center',
     marginBottom: 20,
-    color: "#333",
-  },
-  image: {
-    width: 300,
-    height: 200,
-    borderRadius: 10,
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: "#ff4081",
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
+    color: '#5a3e2b', // Bruine vintage kleur
   },
 });
 
-export default LandingPage;
