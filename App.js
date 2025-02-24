@@ -1,61 +1,55 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import ProductCard from './components/ProductCard';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons'; 
+import HomeScreen from './screens/HomeScreen';
+import DetailsScreen from './screens/DetailsScreen';
+import FavoritesScreen from './screens/FavoritesScreen';
 
-export default function App() {
-  // Lijst met tweedehands producten
-  const products = [
-    {
-      id: 1,
-      image: 'https://placehold.co/150',
-      name: 'Vintage Spijkerjack',
-      description: 'Een retro spijkerjack uit de jaren 90, nog in topconditie!',
-      price: '€25,00',
-    },
-    {
-      id: 2,
-      image: 'https://placehold.co/150',
-      name: 'Leren Handtas',
-      description: 'Mooie vintage handtas van echt leer.',
-      price: '€40,00',
-    },
-    {
-      id: 3,
-      image: 'https://placehold.co/150',
-      name: 'Bohemian Armband',
-      description: 'Handgemaakte armband met natuurlijke stenen.',
-      price: '€10,00',
-    },
-  ];
+// Stack navigator voor Home en Details
+const HomeStack = createStackNavigator();
 
+function HomeStackScreen() {
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.header}>Thrift Shop 🛍️</Text>
-      {products.map((product) => (
-        <ProductCard
-          key={product.id}
-          image={product.image}
-          name={product.name}
-          description={product.description}
-          price={product.price}
-        />
-      ))}
-    </ScrollView>
+    <HomeStack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: '#5a3e2b' },
+        headerTintColor: '#fff',
+        headerTitleStyle: { fontWeight: 'bold' },
+      }}
+    >
+      <HomeStack.Screen name="Home" component={HomeScreen} options={{ title: 'Thrift Shop' }} />
+      <HomeStack.Screen name="Details" component={DetailsScreen} options={{ title: 'Product Details' }} />
+    </HomeStack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#f5f5dc', // Beige achtergrond voor vintage look
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
-    color: '#5a3e2b', // Bruine vintage kleur
-  },
-});
+// Tab navigator onderaan het scherm
+const Tab = createBottomTabNavigator();
 
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ color, size }) => {
+            let iconName;
+            if (route.name === 'Home') {
+              iconName = 'home';
+            } else if (route.name === 'Favorites') {
+              iconName = 'heart';
+            }
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: '#5a3e2b',
+          tabBarInactiveTintColor: 'gray',
+          tabBarStyle: { backgroundColor: '#f5f5dc' },
+        })}
+      >
+        <Tab.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false }} />
+        <Tab.Screen name="Favorites" component={FavoritesScreen} options={{ title: 'Favorieten' }} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
