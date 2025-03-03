@@ -1,14 +1,22 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Button } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const ProductCard = ({ image, name, description, price }) => {
+const ProductCard = ({ product }) => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.card}>
-      <Image source={{ uri: image }} style={styles.image} />
-      <Text style={styles.name}>{name}</Text>
-      <Text style={styles.price}>{price}</Text>
-      <Text style={styles.description}>{description}</Text>
-      <Button title="Koop Nu" color="#8b4513" onPress={() => alert(`Je hebt ${name} gekozen!`)} />
+      <Image source={{ uri: product.image }} style={styles.image} />
+      <Text style={styles.title}>{product.name}</Text>
+      <Text style={styles.description}>{product.description}</Text>
+      <Text style={styles.price}>{product.price}</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('Details', { product })}
+      >
+        <Text style={styles.buttonText}>Bekijk product</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -17,36 +25,44 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
     padding: 15,
+    marginBottom: 10,
     borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 20,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
     elevation: 3,
   },
   image: {
-    width: 150,
+    width: '100%',
     height: 150,
     borderRadius: 10,
   },
-  name: {
+  title: {
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 10,
-    color: '#5a3e2b',
+  },
+  description: {
+    fontSize: 14,
+    color: '#666',
+    marginVertical: 5,
   },
   price: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#8b4513',
-    marginTop: 5,
+    color: '#5a3e2b',
   },
-  description: {
-    fontSize: 14,
-    color: '#555',
-    textAlign: 'center',
-    marginTop: 5,
+  button: {
+    backgroundColor: '#5a3e2b',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 
