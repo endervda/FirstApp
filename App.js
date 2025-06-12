@@ -1,13 +1,17 @@
 import React from 'react';
+import { Image, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; 
-import HomeScreen from './screens/HomeScreen';
-import DetailsScreen from './screens/DetailsScreen';
-import FavoritesScreen from './screens/FavoritesScreen';
+import { Ionicons } from '@expo/vector-icons';
 
-// Stack navigator voor Home en Details
+import HomeScreen from './screens/HomeScreen';
+import FavoritesScreen from './screens/FavoritesScreen';
+import ProductsScreen from './screens/ProductsScreen';
+import ProductDetailScreen from './screens/ProductDetailScreen';
+import BlogScreen from './screens/BlogScreen';
+import BlogDetailScreen from './screens/BlogDetailScreen';
+
 const HomeStack = createStackNavigator();
 
 function HomeStackScreen() {
@@ -19,13 +23,30 @@ function HomeStackScreen() {
         headerTitleStyle: { fontWeight: 'bold' },
       }}
     >
-      <HomeStack.Screen name="Home" component={HomeScreen} options={{ title: 'The Lucky Find' }} />
-      <HomeStack.Screen name="Details" component={DetailsScreen} options={{ title: 'Product Details' }} />
+      <HomeStack.Screen 
+        name="Home" 
+        component={HomeScreen} 
+        options={({ navigation }) => ({
+          headerTitle: () => (
+            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+              <Image 
+                source={require('./assets/logo.png')} 
+                style={{ width: 180, height: 39 }} 
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          ),
+          headerTitleAlign: 'center',
+        })}
+      />
+      <HomeStack.Screen name="Products" component={ProductsScreen} options={{ title: 'Products' }} />
+      <HomeStack.Screen name="ProductDetail" component={ProductDetailScreen} options={{ title: 'Product Detail' }} />
+      <HomeStack.Screen name="Blog" component={BlogScreen} options={{ title: 'Blog' }} />
+      <HomeStack.Screen name="BlogDetail" component={BlogDetailScreen} options={{ title: 'Blog Detail' }} />
     </HomeStack.Navigator>
   );
 }
 
-// Tab navigator onderaan het scherm
 const Tab = createBottomTabNavigator();
 
 export default function App() {

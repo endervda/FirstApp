@@ -1,42 +1,25 @@
 import React from 'react';
-import { ScrollView, Text, StyleSheet, View } from 'react-native';
-import ProductCard from '../components/ProductCard';
-
-const products = [
-  {
-    id: 1,
-    image: 'https://placehold.co/150',
-    name: 'Vintage Spijkerjack',
-    description: 'Een retro spijkerjack uit de jaren 90, nog in topconditie!',
-    price: '€25,00',
-  },
-  {
-    id: 2,
-    image: 'https://placehold.co/150',
-    name: 'Leren Handtas',
-    description: 'Mooie vintage handtas van echt leer.',
-    price: '€40,00',
-  },
-  {
-    id: 3,
-    image: 'https://placehold.co/150',
-    name: 'Bohemian Armband',
-    description: 'Handgemaakte armband met natuurlijke stenen.',
-    price: '€10,00',
-  },
-];
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.eyebrow}>Your next favourite piece is here</Text>
-        <Text style={styles.header}>All our lucky finds</Text>
-      </View>
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </ScrollView>
+    <View style={styles.container}>
+      <Text style={styles.eyebrow}>Checkout the latest lucky finds</Text>
+      <Text style={styles.header}>What’s new?</Text>
+
+      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Products')}>
+        <Text style={styles.cardTitle}>🛍️ Bekijk alle producten</Text>
+        <Text style={styles.cardText}>Duik in onze vintage schatkist</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Blog')}>
+        <Text style={styles.cardTitle}>📰 Bekijk onze blog</Text>
+        <Text style={styles.cardText}>Lees inspirerende verhalen en tips</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -44,22 +27,37 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#FFF',
-  },
-  headerContainer: {
-    marginBottom: 20,
+    backgroundColor: '#fff',
   },
   eyebrow: {
     fontSize: 14,
-    color: '#213335',
-    letterSpacing: 1,
+    color: '#999',
     textTransform: 'uppercase',
-    marginBottom: 5,
+    letterSpacing: 1,
+    textAlign: 'center',
   },
   header: {
-    fontSize: 30,
-    fontWeight: '350',
+    fontSize: 26,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 30,
     color: '#213335',
+  },
+  card: {
+    backgroundColor: '#f5f5f5',
+    padding: 20,
+    borderRadius: 10,
+    marginBottom: 15,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#213335',
+  },
+  cardText: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 5,
   },
 });
 
