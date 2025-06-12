@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Text, StyleSheet } from 'react-native';
+import { ScrollView, Text, StyleSheet, View } from 'react-native';
 import ProductCard from '../components/ProductCard';
 
 const products = [
@@ -29,7 +29,10 @@ const products = [
 const HomeScreen = () => {
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.header}>Thrift Shop 🛍️</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.eyebrow}>Your next favourite piece is here</Text>
+        <Text style={styles.header}>All our lucky finds</Text>
+      </View>
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
@@ -41,14 +44,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f5f5dc',
+    backgroundColor: '#FFF',
+  },
+  headerContainer: {
+    marginBottom: 20,
+  },
+  eyebrow: {
+    fontSize: 14,
+    color: '#213335',
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+    marginBottom: 5,
   },
   header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
-    color: '#5a3e2b',
+    fontSize: 30,
+    fontWeight: '350',
+    color: '#213335',
   },
 });
 

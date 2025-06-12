@@ -14,12 +14,12 @@ function HomeStackScreen() {
   return (
     <HomeStack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: '#5a3e2b' },
+        headerStyle: { backgroundColor: '#213335' },
         headerTintColor: '#fff',
         headerTitleStyle: { fontWeight: 'bold' },
       }}
     >
-      <HomeStack.Screen name="Home" component={HomeScreen} options={{ title: 'Thrift Shop' }} />
+      <HomeStack.Screen name="Home" component={HomeScreen} options={{ title: 'The Lucky Find' }} />
       <HomeStack.Screen name="Details" component={DetailsScreen} options={{ title: 'Product Details' }} />
     </HomeStack.Navigator>
   );
@@ -42,9 +42,9 @@ export default function App() {
             }
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#5a3e2b',
-          tabBarInactiveTintColor: 'gray',
-          tabBarStyle: { backgroundColor: '#f5f5dc' },
+          tabBarActiveTintColor: '#f28c5b',
+          tabBarInactiveTintColor: '#FFF',
+          tabBarStyle: { backgroundColor: '#213335' },
         })}
       >
         <Tab.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false }} />
