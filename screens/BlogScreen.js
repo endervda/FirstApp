@@ -1,43 +1,40 @@
-// screens/BlogScreen.js
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
+import BlogCard from '../components/BlogCard';
 
-const dummyPosts = [
-  { _id: 'a', name: 'Thrifting Tips for Beginners', body: 'Start small. Focus on quality over quantity.' },
-  { _id: 'b', name: 'Top 5 Vintage Trends in 2025', body: 'From oversized blazers to retro sneakers...' },
-  { _id: 'c', name: 'Why Thrifting is Eco-Friendly', body: 'Reusing clothes reduces waste and pollution.' },
+const dummyBlogs = [
+  {
+    _id: 'b1',
+    title: 'How to Style Vintage Jackets',
+    description: 'Discover the best tips to rock your vintage jackets in 2025...',
+    date: '2025-06-10',
+    tag: 'Fashion',
+    image: 'https://via.placeholder.com/300x180.png?text=Vintage+Style',
+    content: 'Full blog content about styling vintage jackets...',
+  },
+  // ...
 ];
 
-const BlogScreen = ({ navigation }) => {
+const BlogsScreen = ({ navigation }) => {
   return (
     <FlatList
-      data={dummyPosts}
+      data={dummyBlogs}
       keyExtractor={(item) => item._id}
-      contentContainerStyle={{ padding: 16 }}
       renderItem={({ item }) => (
-        <TouchableOpacity
-          style={styles.card}
-          onPress={() => navigation.navigate('BlogDetail', { post: item })}
-        >
-          <Text style={styles.title}>{item.name}</Text>
-        </TouchableOpacity>
+        <BlogCard
+          blog={item}
+          onPress={() => navigation.navigate('BlogDetail', { blog: item })}
+        />
       )}
+      contentContainerStyle={styles.container}
     />
   );
 };
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#fff',
+  container: {
     padding: 16,
-    marginBottom: 12,
-    borderRadius: 10,
-    elevation: 2,
-  },
-  title: {
-    fontWeight: 'bold',
-    fontSize: 18,
   },
 });
 
-export default BlogScreen;
+export default BlogsScreen;
