@@ -1,64 +1,78 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const HomeScreen = () => {
+export default function HomeScreen() {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.eyebrow}>Checkout the latest lucky finds</Text>
-      <Text style={styles.header}>What’s new?</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      {/* Hero Section */}
+      <View style={styles.heroContainer}>
+        <Text style={styles.heroTitle}>Discover timeless pieces with a story</Text>
+        <Text style={styles.heroSubtitle}>
+          From cozy sweaters to timeless decor, every item tells a story and adds a touch of charm to your day. Your next lucky find is just a click away.
+        </Text>
+        <Image
+          source={require('../assets/heroimg.jpg')}
+          style={styles.heroImage}
+          resizeMode="cover"
+        />
+      </View>
 
-      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Products')}>
-        <Text style={styles.cardTitle}>🛍️ Bekijk alle producten</Text>
-        <Text style={styles.cardText}>Duik in onze vintage schatkist</Text>
-      </TouchableOpacity>
+      {/* Navigation Buttons */}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('Products')}>
+          <Text style={styles.buttonText}>Browse Products</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('Blog')}>
-        <Text style={styles.cardTitle}>📰 Bekijk onze blog</Text>
-        <Text style={styles.cardText}>Lees inspirerende verhalen en tips</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('Blog')}>
+          <Text style={styles.buttonText}>Read Blog</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 20,
     backgroundColor: '#fff',
+    flexGrow: 1,
   },
-  eyebrow: {
-    fontSize: 14,
-    color: '#999',
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-    textAlign: 'center',
-  },
-  header: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    textAlign: 'center',
+  heroContainer: {
+    alignItems: 'flex-start',
     marginBottom: 30,
+  },
+  heroTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+    marginBottom: 10,
     color: '#213335',
   },
-  card: {
-    backgroundColor: '#f5f5f5',
-    padding: 20,
-    borderRadius: 10,
+  heroSubtitle: {
+    fontSize: 14,
+    color: '#5D6F83',
     marginBottom: 15,
   },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#213335',
+  heroImage: {
+    width: '100%',
+    height: 200,
+    borderRadius: 12,
   },
-  cardText: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 5,
+  buttonContainer: {
+    gap: 20,
+  },
+  navButton: {
+    backgroundColor: '#f28c5b',
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#FFF',
+    fontSize: 18,
+    fontWeight: '600',
   },
 });
-
-export default HomeScreen;
