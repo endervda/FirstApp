@@ -21,7 +21,7 @@ const BlogCard = ({ blog, onPress }) => {
         </View>
         <Text style={styles.title}>{blog.title}</Text>
         <Text style={styles.description} numberOfLines={3}>
-          {blog.description}
+          {blog.thumbnailDescription}
         </Text>
       </View>
     </TouchableOpacity>
