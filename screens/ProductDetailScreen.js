@@ -1,35 +1,79 @@
 import React, { useState } from 'react';
-import { View, Text, Image, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import { useRoute } from '@react-navigation/native';
+import { useCart } from '../contexts/CartContext';
 
-export default function ProductDetailScreen({ route }) {
+const sizeLabels = {
+  'ab210777cbb6e7fc6dd324bde0db7350': 'Extra Large',
+  'e090fb28823103bce49230dba3868005': 'Large',
+  '1a18ea29caed143f0e4192e6d7708b9c': 'Medium',
+  'e18faaaab55a74d1a0f55336735b4851': 'Small',
+  '2d6e1fcf2d2f5090808bacae44e392f2': '41',
+};
+
+export default function ProductDetailScreen() {
+  const route = useRoute();
   const { product } = route.params;
+  const { addToCart } = useCart();
+
   const [quantity, setQuantity] = useState(1);
 
-  const increase = () => setQuantity((q) => q + 1);
-  const decrease = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
+  const priceInEuros = product.price.toFixed(2);
+  const imageUrl = product.image;
+  const type = product.type || 'Onbekend';
+  const size = sizeLabels[product.size] || product.size || 'Onbekend';
 
-  const priceFormatted = (product.price * quantity).toFixed(2).replace('.', ',');
+  const handleAddToCart = () => {
+    addToCart(product, quantity); // ✅ quantity wordt correct meegegeven
+  };
 
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: product.image }} style={styles.image} resizeMode="contain" />
-      <Text style={styles.title}>{product.name}</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="cover" />
+
+      <Text style={styles.name}>{product.name}</Text>
+      <Text style={styles.price}>€ {priceInEuros} EUR</Text>
+
+      <View style={styles.detailsRow}>
+        <View style={styles.detailsColumn}>
+          <Text style={styles.eyebrow}>Type</Text>
+          <Text style={styles.details}>{type}</Text>
+        </View>
+        <View style={styles.detailsColumn}>
+          <Text style={styles.eyebrow}>Size</Text>
+          <Text style={styles.details}>{size}</Text>
+        </View>
+      </View>
+
       <Text style={styles.description}>{product.description}</Text>
 
       <View style={styles.quantityContainer}>
-        <TouchableOpacity style={styles.button} onPress={decrease}>
-          <Text style={styles.buttonText}>-</Text>
+        <TouchableOpacity
+          style={styles.qtyButton}
+          onPress={() => setQuantity((prev) => Math.max(1, prev - 1))}
+        >
+          <Text style={styles.qtyButtonText}>−</Text>
         </TouchableOpacity>
         <Text style={styles.quantity}>{quantity}</Text>
-        <TouchableOpacity style={styles.button} onPress={increase}>
-          <Text style={styles.buttonText}>+</Text>
+        <TouchableOpacity
+          style={styles.qtyButton}
+          onPress={() => setQuantity((prev) => prev + 1)}
+        >
+          <Text style={styles.qtyButtonText}>+</Text>
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.price}>
-        Totaal: € {priceFormatted} {product.currency}
-      </Text>
-    </View>
+      <TouchableOpacity style={styles.cartButton} onPress={handleAddToCart}>
+        <Text style={styles.cartButtonText}>Add to Cart</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
 
@@ -37,46 +81,88 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     backgroundColor: '#fff',
-    flex: 1,
+    alignItems: 'center',
   },
   image: {
     width: '100%',
-    height: 280,
+    height: 250,
+    borderRadius: 12,
     marginBottom: 20,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
+  name: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#213335',
+    marginBottom: 8,
+    alignSelf: 'flex-start',
+  },
+  price: {
+    fontSize: 20,
+    color: '#f28c5b',
     marginBottom: 12,
+    fontWeight: 'bold',
+    alignSelf: 'flex-start',
+  },
+  detailsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 16,
+  },
+  detailsColumn: {
+    flex: 1,
+    alignItems: 'flex-start',
+  },
+  eyebrow: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#213335',
+    textTransform: 'uppercase',
+    marginBottom: 4,
+  },
+  details: {
+    fontSize: 16,
+    marginBottom: 4,
+    backgroundColor: '#f28c5b',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    color: '#FFF',
   },
   description: {
-    fontSize: 18,
-    color: '#666',
-    marginBottom: 30,
+    fontSize: 16,
+    color: '#444',
+    marginBottom: 20,
+    textAlign: 'left',
+    width: '100%',
   },
   quantityContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 25,
+    marginBottom: 20,
   },
-  button: {
-    backgroundColor: '#f28c5b',
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 6,
+  qtyButton: {
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: '#eee',
   },
-  buttonText: {
-    fontSize: 24,
-    color: '#fff',
+  qtyButtonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   quantity: {
-    marginHorizontal: 20,
-    fontSize: 22,
-    fontWeight: 'bold',
+    marginHorizontal: 15,
+    fontSize: 18,
   },
-  price: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#213335',
+  cartButton: {
+    backgroundColor: '#f28c5b',
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 10,
+  },
+  cartButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });

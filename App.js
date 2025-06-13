@@ -1,76 +1,136 @@
 import React from 'react';
-import { Image, TouchableOpacity } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons';
-
+import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './screens/HomeScreen';
-import FavoritesScreen from './screens/FavoritesScreen';
 import ProductsScreen from './screens/ProductsScreen';
 import ProductDetailScreen from './screens/ProductDetailScreen';
+import CartScreen from './screens/CartScreen';
 import BlogScreen from './screens/BlogScreen';
 import BlogDetailScreen from './screens/BlogDetailScreen';
+import { CartProvider } from './contexts/CartContext';
+import CartIcon from './components/CartIcon';
+import { View, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
 
-const HomeStack = createStackNavigator();
-
-function HomeStackScreen() {
-  return (
-    <HomeStack.Navigator
-      screenOptions={{
-        headerStyle: { backgroundColor: '#213335' },
-        headerTintColor: '#fff',
-        headerTitleStyle: { fontWeight: 'bold' },
-      }}
-    >
-      <HomeStack.Screen 
-        name="Home" 
-        component={HomeScreen} 
-        options={({ navigation }) => ({
-          headerTitle: () => (
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-              <Image 
-                source={require('./assets/logo.png')} 
-                style={{ width: 180, height: 39 }} 
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          ),
-          headerTitleAlign: 'center',
-        })}
-      />
-      <HomeStack.Screen name="Products" component={ProductsScreen} options={{ title: 'Products' }} />
-      <HomeStack.Screen name="ProductDetail" component={ProductDetailScreen} options={{ title: 'Product Detail' }} />
-      <HomeStack.Screen name="Blog" component={BlogScreen} options={{ title: 'Blog' }} />
-      <HomeStack.Screen name="BlogDetail" component={BlogDetailScreen} options={{ title: 'Blog Detail' }} />
-    </HomeStack.Navigator>
-  );
-}
-
-const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ color, size }) => {
-            let iconName;
-            if (route.name === 'Home') {
-              iconName = 'home';
-            } else if (route.name === 'Favorites') {
-              iconName = 'heart';
-            }
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: '#f28c5b',
-          tabBarInactiveTintColor: '#FFF',
-          tabBarStyle: { backgroundColor: '#213335' },
-        })}
-      >
-        <Tab.Screen name="Home" component={HomeStackScreen} options={{ headerShown: false }} />
-        <Tab.Screen name="Favorites" component={FavoritesScreen} options={{ title: 'Favorieten' }} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <CartProvider>
+      <NavigationContainer>
+        <View style={styles.container}>
+          <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={({ navigation }) => ({
+              headerRight: () => <CartIcon navigation={navigation} />,
+              headerStyle: {
+                backgroundColor: '#213335',
+                shadowColor: 'transparent',
+              },
+              headerTintColor: '#FFF',
+              headerTitle: () => (
+                <Image
+                  source={require('./assets/logo.png')}
+                  style={{ width: 180, height: 39, resizeMode: 'contain' }}
+                />
+              ),
+              headerTitleAlign: 'center',
+            })}
+          >
+            <Stack.Screen
+              name="Home"
+              component={HomeScreen}
+              options={{ headerLeft: null }}
+            />
+            <Stack.Screen
+              name="Products"
+              component={ProductsScreen}
+              options={({ navigation }) => ({
+                headerLeft: () => (
+                  <TouchableOpacity
+                    onPress={() => navigation.goBack()}
+                    style={{ marginLeft: 10 }}
+                    hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+                  >
+                    <Text style={{ color: '#fff', fontSize: 24 }}>{'\u25C0'}</Text>
+                  </TouchableOpacity>
+                ),
+                title: 'Products',
+              })}
+            />
+            <Stack.Screen
+              name="ProductDetail"
+              component={ProductDetailScreen}
+              options={({ navigation }) => ({
+                headerLeft: () => (
+                  <TouchableOpacity
+                    onPress={() => navigation.goBack()}
+                    style={{ marginLeft: 10 }}
+                    hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+                  >
+                    <Text style={{ color: '#fff', fontSize: 24 }}>{'\u25C0'}</Text>
+                  </TouchableOpacity>
+                ),
+                title: 'Product Detail',
+              })}
+            />
+            <Stack.Screen
+              name="Cart"
+              component={CartScreen}
+              options={({ navigation }) => ({
+                headerLeft: () => (
+                  <TouchableOpacity
+                    onPress={() => navigation.goBack()}
+                    style={{ marginLeft: 10 }}
+                    hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+                  >
+                    <Text style={{ color: '#fff', fontSize: 24 }}>{'\u25C0'}</Text>
+                  </TouchableOpacity>
+                ),
+                title: 'Cart',
+              })}
+            />
+            <Stack.Screen
+              name="Blog"
+              component={BlogScreen}
+              options={({ navigation }) => ({
+                headerLeft: () => (
+                  <TouchableOpacity
+                    onPress={() => navigation.goBack()}
+                    style={{ marginLeft: 10 }}
+                    hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+                  >
+                    <Text style={{ color: '#fff', fontSize: 24 }}>{'\u25C0'}</Text>
+                  </TouchableOpacity>
+                ),
+                title: 'Blog',
+              })}
+            />
+            <Stack.Screen
+              name="BlogDetail"
+              component={BlogDetailScreen}
+              options={({ navigation }) => ({
+                headerLeft: () => (
+                  <TouchableOpacity
+                    onPress={() => navigation.goBack()}
+                    style={{ marginLeft: 10 }}
+                    hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+                  >
+                    <Text style={{ color: '#fff', fontSize: 24 }}>{'\u25C0'}</Text>
+                  </TouchableOpacity>
+                ),
+                title: 'Blog Detail',
+              })}
+            />
+          </Stack.Navigator>
+        </View>
+      </NavigationContainer>
+    </CartProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+});

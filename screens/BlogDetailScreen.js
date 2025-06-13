@@ -1,4 +1,3 @@
-// screens/BlogDetailScreen.js
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 
@@ -7,8 +6,8 @@ const BlogDetailScreen = ({ route }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>{post.name}</Text>
-      <Text style={styles.body}>{post.body || 'Geen inhoud beschikbaar.'}</Text>
+      <Text style={styles.title}>{post.title || post.name}</Text>
+      <Text style={styles.body}>{post.content || post.body || 'Geen inhoud beschikbaar.'}</Text>
     </ScrollView>
   );
 };

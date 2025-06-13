@@ -1,3 +1,4 @@
+// screens/HomeScreen.js
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -7,7 +8,6 @@ export default function HomeScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* Hero Section */}
       <View style={styles.heroContainer}>
         <Text style={styles.heroTitle}>Discover timeless pieces with a story</Text>
         <Text style={styles.heroSubtitle}>
@@ -20,7 +20,6 @@ export default function HomeScreen() {
         />
       </View>
 
-      {/* Navigation Buttons */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('Products')}>
           <Text style={styles.buttonText}>Browse Products</Text>

@@ -12,7 +12,7 @@ const dummyBlogs = [
     image: 'https://via.placeholder.com/300x180.png?text=Vintage+Style',
     content: 'Full blog content about styling vintage jackets...',
   },
-  // ...
+  // Voeg hier meer blogs toe indien nodig
 ];
 
 const BlogsScreen = ({ navigation }) => {
@@ -23,7 +23,7 @@ const BlogsScreen = ({ navigation }) => {
       renderItem={({ item }) => (
         <BlogCard
           blog={item}
-          onPress={() => navigation.navigate('BlogDetail', { blog: item })}
+          onPress={() => navigation.navigate('BlogDetail', { post: item })}
         />
       )}
       contentContainerStyle={styles.container}

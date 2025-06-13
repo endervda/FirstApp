@@ -5,6 +5,15 @@ import ProductCard from '../components/ProductCard';
 const API_URL = 'https://api.webflow.com/v2/sites/68418e388b488bc93c8a5d75/products';
 const API_TOKEN = 'Bearer 083f9b97d0e4049a358d22c560dedff7023bf1df10c9a2c6d79e7b4f0d033577';
 
+// Maat ID -> Label mapping
+const sizeLabels = {
+  'ab210777cbb6e7fc6dd324bde0db7350': 'Extra Large',
+  'e090fb28823103bce49230dba3868005': 'Large',
+  '1a18ea29caed143f0e4192e6d7708b9c': 'Medium',
+  'e18faaaab55a74d1a0f55336735b4851': 'Small',
+  '2d6e1fcf2d2f5090808bacae44e392f2': '41',
+};
+
 export default function ProductsScreen({ navigation }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,15 +38,19 @@ export default function ProductsScreen({ navigation }) {
       const formattedProducts = json.items.map((item) => {
         const product = item.product?.fieldData || {};
         const sku = item.skus?.[0]?.fieldData || {};
+        const sizeId = product.size;
         return {
           id: item.product?.id || Math.random().toString(),
           name: product.name || 'Geen naam',
           description: product.description || 'Geen omschrijving',
-          price: sku.price?.value ? sku.price.value / 100 : 0,
+          price: sku.price?.value ? sku.price.value / 100 : 0, // prijs in euro's
           currency: sku.price?.unit || 'EUR',
           image:
             sku['main-image']?.url ||
             'https://via.placeholder.com/300x180.png?text=Geen+Afbeelding',
+          type: product['clothing-type'] || 'Onbekend',
+          size: sizeLabels[sizeId] || 'Onbekend',
+          skuId: item.skus?.[0]?.id || null,
           rawProduct: item,
         };
       });
@@ -89,7 +102,9 @@ export default function ProductsScreen({ navigation }) {
             price={item.price}
             currency={item.currency}
             image={item.image}
-            onPress={() => navigation.navigate('ProductDetail', { product: item })}
+            onPress={() =>
+              navigation.navigate('ProductDetail', { product: item })
+            }
           />
         )}
         contentContainerStyle={{ paddingBottom: 20 }}
