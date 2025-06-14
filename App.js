@@ -12,6 +12,7 @@ import { CartProvider } from './contexts/CartContext';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import { View, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import CartIcon from './components/CartIcon';
 
 const Stack = createStackNavigator();
 
@@ -32,12 +33,9 @@ export default function App() {
                     >
                       <Ionicons name="heart-outline" size={24} color="#fff" />
                     </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate('Cart')}
-                      style={styles.iconButton}
-                    >
-                      <Ionicons name="cart-outline" size={24} color="#fff" />
-                    </TouchableOpacity>
+                    <View style={styles.iconButton}>
+                      <CartIcon navigation={navigation} />
+                    </View>
                   </View>
                 ),
                 headerStyle: {
@@ -89,10 +87,10 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     flexDirection: 'row',
-    gap: 12,
+    alignItems: 'center',
     paddingRight: 16,
   },
   iconButton: {
-    marginLeft: 8,
+    marginLeft: 12,
   },
 });
