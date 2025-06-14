@@ -36,7 +36,6 @@ export default function CartScreen() {
 
     setIsOrdering(true);
 
-    // Simuleer een order proces met timeout (bijv. API call)
     setTimeout(() => {
       setIsOrdering(false);
       clearCart();
@@ -59,7 +58,6 @@ export default function CartScreen() {
           />
           <Text style={styles.total}>Total: € {totalPrice.toFixed(2)}</Text>
 
-          {/* Order Now button helemaal onderaan */}
           <TouchableOpacity
             style={[styles.orderButton, isOrdering && styles.orderButtonDisabled]}
             onPress={handleOrderNow}
