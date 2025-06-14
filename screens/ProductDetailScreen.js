@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { useCart } from '../contexts/CartContext';
+import { useFavorites } from '../contexts/FavoritesContext';
+import { Ionicons } from '@expo/vector-icons';
 
 const sizeLabels = {
   'ab210777cbb6e7fc6dd324bde0db7350': 'Extra Large',
@@ -22,21 +24,32 @@ export default function ProductDetailScreen() {
   const route = useRoute();
   const { product } = route.params;
   const { addToCart } = useCart();
+  const { favorites, toggleFavorite } = useFavorites();
 
   const [quantity, setQuantity] = useState(1);
 
+  const isFavorite = favorites.some((fav) => fav.id === product.id);
   const priceInEuros = product.price.toFixed(2);
   const imageUrl = product.image;
   const type = product.type || 'Onbekend';
   const size = sizeLabels[product.size] || product.size || 'Onbekend';
 
   const handleAddToCart = () => {
-    addToCart(product, quantity); // ✅ quantity wordt correct meegegeven
+    addToCart(product, quantity);
+  };
+
+  const handleToggleFavorite = () => {
+    toggleFavorite(product);
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="cover" />
+      <View style={styles.imageWrapper}>
+        <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="cover" />
+        <TouchableOpacity onPress={handleToggleFavorite} style={styles.favoriteButton}>
+          <Ionicons name={isFavorite ? 'heart' : 'heart-outline'} size={28} color="#f28c5b" />
+        </TouchableOpacity>
+      </View>
 
       <Text style={styles.name}>{product.name}</Text>
       <Text style={styles.price}>€ {priceInEuros} EUR</Text>
@@ -83,11 +96,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
   },
+  imageWrapper: {
+    width: '100%',
+    position: 'relative',
+    marginBottom: 20,
+  },
   image: {
     width: '100%',
     height: 250,
     borderRadius: 12,
-    marginBottom: 20,
+  },
+  favoriteButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    backgroundColor: '#fff',
+    padding: 6,
+    borderRadius: 20,
+    elevation: 3,
   },
   name: {
     fontSize: 24,
