@@ -29,22 +29,6 @@ export default function BlogScreen({ navigation }) {
 
       const json = await response.json();
 
-      console.log('First 3 blog items:');
-      json.items.slice(0, 3).forEach((item, index) => {
-        console.log(`Item ${index + 1}:`, {
-          id: item.id,
-          fieldData: item.fieldData ? {
-            name: item.fieldData.name,
-            date: item.fieldData.date,
-            tag: item.fieldData.tag,
-            description: item.fieldData.description,
-            'body-text-rich': item.fieldData['body-text-rich'],
-            'thumbnail-description': item.fieldData['thumbnail-description'],
-            thumbnailImage: item.fieldData['thumbnail-image']?.url || 'No image',
-          } : 'No fieldData',
-        });
-      });
-
       const formattedBlogs = json.items.map(item => {
         const fields = item.fieldData || {};
         return {
@@ -95,6 +79,12 @@ export default function BlogScreen({ navigation }) {
     <FlatList
       data={blogs}
       keyExtractor={item => item.id.toString()}
+      ListHeaderComponent={() => (
+        <View style={styles.headerContainer}>
+          <Text style={styles.eyebrow}>all our amazing blogs</Text>
+          <Text style={styles.title}>Start reading to learn more about thrifting</Text>
+        </View>
+      )}
       renderItem={({ item }) => (
         <BlogCard
           blog={item}
@@ -109,11 +99,27 @@ export default function BlogScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    backgroundColor: '#fff',
   },
   loader: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+  },
+
+  eyebrow: {
+    fontSize: 14,
+    color: '#f28c5b',
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: 1.5,
+    marginBottom: 6,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 12,
+    color: '#213335',
   },
 });

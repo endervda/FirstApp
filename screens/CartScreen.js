@@ -1,10 +1,11 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import { useCart } from '../contexts/CartContext';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function CartScreen() {
-  const { cartItems, removeFromCart } = useCart();
+  const { cartItems, removeFromCart, clearCart } = useCart();
+  const [isOrdering, setIsOrdering] = useState(false);
 
   const totalPrice = cartItems.reduce((total, item) => {
     const price = parseFloat(item.product?.price ?? 0);
@@ -30,6 +31,19 @@ export default function CartScreen() {
     );
   };
 
+  const handleOrderNow = () => {
+    if (cartItems.length === 0) return;
+
+    setIsOrdering(true);
+
+    // Simuleer een order proces met timeout (bijv. API call)
+    setTimeout(() => {
+      setIsOrdering(false);
+      clearCart();
+      Alert.alert('Order Success', 'Your order went through successfully!');
+    }, 1000);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Your Cart</Text>
@@ -44,6 +58,17 @@ export default function CartScreen() {
             contentContainerStyle={styles.list}
           />
           <Text style={styles.total}>Total: € {totalPrice.toFixed(2)}</Text>
+
+          {/* Order Now button helemaal onderaan */}
+          <TouchableOpacity
+            style={[styles.orderButton, isOrdering && styles.orderButtonDisabled]}
+            onPress={handleOrderNow}
+            disabled={isOrdering}
+          >
+            <Text style={styles.orderButtonText}>
+              {isOrdering ? 'Ordering...' : 'Order Now'}
+            </Text>
+          </TouchableOpacity>
         </>
       )}
     </View>
@@ -109,5 +134,20 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     marginLeft: 10,
+  },
+  orderButton: {
+    backgroundColor: '#f28c5b',
+    paddingVertical: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  orderButtonDisabled: {
+    opacity: 0.6,
+  },
+  orderButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '700',
   },
 });
