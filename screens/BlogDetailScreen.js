@@ -1,25 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 
-// Functie om HTML tags te strippen en <p> te vervangen door nieuwe regels
 function stripHtmlTagsWithParagraphs(html) {
   if (!html) return '';
-  // Vervang <p ...> door twee nieuwe regels
   let text = html.replace(/<p[^>]*>/gi, '\n\n');
-  // Verwijder sluitende </p> tags
   text = text.replace(/<\/p>/gi, '');
-  // Verwijder overige HTML tags
   text = text.replace(/<[^>]+>/g, '');
-  // Trim whitespace aan begin en eind
   return text.trim();
 }
 
-// Functie om datum te formatteren naar DD/MM/YYYY
 function formatDate(dateString) {
   if (!dateString) return '';
   const date = new Date(dateString);
   const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // maanden 0-indexed
+  const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
 }
@@ -29,7 +23,7 @@ export default function BlogDetailScreen({ route }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>{blog.title || 'Geen titel'}</Text>
+      <Text style={styles.title}>{blog.title || 'No Title'}</Text>
 
       {blog.image && (
         <Image source={{ uri: blog.image }} style={styles.image} />
@@ -42,7 +36,7 @@ export default function BlogDetailScreen({ route }) {
 
       <Text style={styles.description}>{blog.description || ''}</Text>
 
-      <Text style={styles.body}>{stripHtmlTagsWithParagraphs(blog.content) || 'Geen inhoud beschikbaar.'}</Text>
+      <Text style={styles.body}>{stripHtmlTagsWithParagraphs(blog.content) || 'No content available.'}</Text>
     </ScrollView>
   );
 }

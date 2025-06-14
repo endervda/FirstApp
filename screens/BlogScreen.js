@@ -29,8 +29,7 @@ export default function BlogScreen({ navigation }) {
 
       const json = await response.json();
 
-      // Log de eerste 3 items overzichtelijk
-      console.log('Eerste 3 blog items (verkort):');
+      console.log('First 3 blog items:');
       json.items.slice(0, 3).forEach((item, index) => {
         console.log(`Item ${index + 1}:`, {
           id: item.id,
@@ -41,8 +40,8 @@ export default function BlogScreen({ navigation }) {
             description: item.fieldData.description,
             'body-text-rich': item.fieldData['body-text-rich'],
             'thumbnail-description': item.fieldData['thumbnail-description'],
-            thumbnailImage: item.fieldData['thumbnail-image']?.url || 'geen image',
-          } : 'geen fieldData',
+            thumbnailImage: item.fieldData['thumbnail-image']?.url || 'No image',
+          } : 'No fieldData',
         });
       });
 
@@ -50,10 +49,10 @@ export default function BlogScreen({ navigation }) {
         const fields = item.fieldData || {};
         return {
           id: item._id || item.id,
-          title: fields.name || 'Geen titel',
-          date: fields.date || 'Onbekend',
+          title: fields.name || 'No Title',
+          date: fields.date || '',
           tag: fields.tag || '',
-          description: fields.description || 'Geen beschrijving',
+          description: fields.description || 'No description',
           content: fields['body-text-rich'] || '',
           thumbnailDescription: fields['thumbnail-description'] || '',
           image: fields['thumbnail-image']?.url || 'https://via.placeholder.com/300x180.png?text=Geen+Afbeelding',
@@ -62,7 +61,7 @@ export default function BlogScreen({ navigation }) {
 
       setBlogs(formattedBlogs);
     } catch (err) {
-      setError(err.message || 'Onbekende fout');
+      setError(err.message || 'Unknown error occurred');
     } finally {
       setLoading(false);
     }
@@ -76,7 +75,7 @@ export default function BlogScreen({ navigation }) {
     return (
       <View style={styles.loader}>
         <ActivityIndicator size="large" color="#f28c5b" />
-        <Text style={{ marginTop: 10, color: '#888' }}>Laden...</Text>
+        <Text style={{ marginTop: 10, color: '#888' }}>Loading...</Text>
       </View>
     );
   }
@@ -85,7 +84,7 @@ export default function BlogScreen({ navigation }) {
     return (
       <View style={styles.loader}>
         <Text style={{ color: 'red', fontSize: 16, marginBottom: 4 }}>
-          ⚠️ Fout bij laden
+          ⚠️ Error while loading
         </Text>
         <Text style={{ color: '#333', textAlign: 'center' }}>{error}</Text>
       </View>
@@ -99,7 +98,7 @@ export default function BlogScreen({ navigation }) {
       renderItem={({ item }) => (
         <BlogCard
           blog={item}
-          onPress={() => navigation.navigate('BlogDetail', { blog: item })}  // **hier aangepast**
+          onPress={() => navigation.navigate('BlogDetail', { blog: item })}
         />
       )}
       contentContainerStyle={styles.container}

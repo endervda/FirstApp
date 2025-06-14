@@ -41,15 +41,15 @@ export default function ProductsScreen({ navigation }) {
         const sizeId = product.size;
         return {
           id: item.product?.id || Math.random().toString(),
-          name: product.name || 'Geen naam',
-          description: product.description || 'Geen omschrijving',
-          price: sku.price?.value ? sku.price.value / 100 : 0, // prijs in euro's
+          name: product.name || 'No naam',
+          description: product.description || 'No description',
+          price: sku.price?.value ? sku.price.value / 100 : 0,
           currency: sku.price?.unit || 'EUR',
           image:
             sku['main-image']?.url ||
             'https://via.placeholder.com/300x180.png?text=Geen+Afbeelding',
-          type: product['clothing-type'] || 'Onbekend',
-          size: sizeLabels[sizeId] || 'Onbekend',
+          type: product['clothing-type'] || 'Unknown',
+          size: sizeLabels[sizeId] || 'Unknown',
           skuId: item.skus?.[0]?.id || null,
           rawProduct: item,
         };
@@ -71,7 +71,7 @@ export default function ProductsScreen({ navigation }) {
     return (
       <View style={styles.loader}>
         <ActivityIndicator size="large" color="#f28c5b" />
-        <Text style={{ marginTop: 10, color: '#888' }}>Laden...</Text>
+        <Text style={{ marginTop: 10, color: '#888' }}>Loading...</Text>
       </View>
     );
   }
@@ -80,7 +80,7 @@ export default function ProductsScreen({ navigation }) {
     return (
       <View style={styles.loader}>
         <Text style={{ color: 'red', fontSize: 16, marginBottom: 4 }}>
-          ⚠️ Fout bij laden
+          ⚠️ Error while loading
         </Text>
         <Text style={{ color: '#333', textAlign: 'center' }}>{error}</Text>
       </View>

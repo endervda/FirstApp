@@ -6,13 +6,11 @@ import { Ionicons } from '@expo/vector-icons';
 export default function CartScreen() {
   const { cartItems, removeFromCart } = useCart();
 
-  // ✅ Correcte totaalprijs in euro's berekenen
   const totalPrice = cartItems.reduce((total, item) => {
     const price = parseFloat(item.product?.price ?? 0);
     return total + price * item.quantity;
   }, 0);
 
-  // 🛍️ Render elk item inclusief delete knop
   const renderItem = ({ item }) => {
     const price = parseFloat(item.product?.price ?? 0);
     const totalItemPrice = price * item.quantity;
